@@ -169,8 +169,6 @@ export default function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
-          {/* YÜK VER */}
-
           <Link
             href="/yuk-ver"
             className="group bg-white border border-gray-100 rounded-3xl shadow-md p-7 hover:shadow-xl hover:-translate-y-1 transition"
@@ -193,8 +191,6 @@ export default function Home() {
             </p>
 
           </Link>
-
-          {/* BOŞ ARAÇ */}
 
           <Link
             href="/bos-arac"
@@ -219,8 +215,6 @@ export default function Home() {
 
           </Link>
 
-          {/* YÜK BUL */}
-
           <Link
             href="/ilanlar"
             className="group bg-white border border-gray-100 rounded-3xl shadow-md p-7 hover:shadow-xl hover:-translate-y-1 transition"
@@ -243,8 +237,6 @@ export default function Home() {
             </p>
 
           </Link>
-
-          {/* BOŞ ARAÇ BUL */}
 
           <Link
             href="/bos-arac"
@@ -299,8 +291,6 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
-            {/* BENİM İLANLARIM */}
-
             <Link
               href="/benim-ilanlarim"
               className="bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-3xl p-6 transition"
@@ -319,8 +309,6 @@ export default function Home() {
               </p>
 
             </Link>
-
-            {/* TEKLİFLERİM */}
 
             <Link
               href="/tekliflerim"
@@ -341,8 +329,6 @@ export default function Home() {
 
             </Link>
 
-            {/* GELEN TEKLİFLER */}
-
             <Link
               href="/gelen-teklifler"
               className="bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-3xl p-6 transition"
@@ -361,8 +347,6 @@ export default function Home() {
               </p>
 
             </Link>
-
-            {/* ANLAŞMALAR */}
 
             <Link
               href="/anlasmalarim"
@@ -409,8 +393,6 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          {/* ADIM 1 */}
-
           <div className="relative bg-white rounded-3xl shadow-md border border-gray-100 p-8">
 
             <div className="absolute -top-4 left-6 bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-black">
@@ -431,8 +413,6 @@ export default function Home() {
 
           </div>
 
-          {/* ADIM 2 */}
-
           <div className="relative bg-white rounded-3xl shadow-md border border-gray-100 p-8">
 
             <div className="absolute -top-4 left-6 bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-black">
@@ -452,8 +432,6 @@ export default function Home() {
             </p>
 
           </div>
-
-          {/* ADIM 3 */}
 
           <div className="relative bg-white rounded-3xl shadow-md border border-gray-100 p-8">
 
@@ -702,31 +680,19 @@ export default function Home() {
 
             <div className="flex flex-wrap justify-center md:justify-end gap-5 text-sm font-semibold text-gray-300">
 
-              <Link
-                href="/ilanlar"
-                className="hover:text-white"
-              >
+              <Link href="/ilanlar" className="hover:text-white">
                 Yük İlanları
               </Link>
 
-              <Link
-                href="/bos-arac"
-                className="hover:text-white"
-              >
+              <Link href="/bos-arac" className="hover:text-white">
                 Boş Araçlar
               </Link>
 
-              <Link
-                href="/anlasmalarim"
-                className="hover:text-white"
-              >
+              <Link href="/anlasmalarim" className="hover:text-white">
                 Anlaşmalarım
               </Link>
 
-              <Link
-                href="/profil"
-                className="hover:text-white"
-              >
+              <Link href="/profil" className="hover:text-white">
                 Profilim
               </Link>
 
@@ -734,8 +700,48 @@ export default function Home() {
 
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 text-sm">
-            © 2026 YÜKLİN. Tüm hakları saklıdır.
+          <div className="border-t border-gray-800 mt-8 pt-6">
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+
+              <p>
+                © 2026 YÜKLİN. Tüm hakları saklıdır.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+
+                <Link
+                  href="/kvkk"
+                  className="hover:text-white transition"
+                >
+                  KVKK
+                </Link>
+
+                <Link
+                  href="/gizlilik"
+                  className="hover:text-white transition"
+                >
+                  Gizlilik Politikası
+                </Link>
+
+                <Link
+                  href="/kullanim-kosullari"
+                  className="hover:text-white transition"
+                >
+                  Kullanım Koşulları
+                </Link>
+
+                <Link
+                  href="/cerez-politikasi"
+                  className="hover:text-white transition"
+                >
+                  Çerez Politikası
+                </Link>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
