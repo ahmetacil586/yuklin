@@ -1,8 +1,46 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "YÜKLİN",
-  description: "Türkiye'nin Akıllı Yük Taşıma Platformu",
+  metadataBase: new URL("https://yuklin.com.tr"),
+
+  title: {
+    default: "YÜKLİN | Yükünü Paylaş, En Uygun Teklifi Bul",
+    template: "%s | YÜKLİN",
+  },
+
+  description:
+    "YÜKLİN ile yük ilanı oluştur, boş araçları bul, nakliye tekliflerini karşılaştır ve taşımacılığını kolayca yönet.",
+
+  keywords: [
+    "yük taşıma",
+    "nakliye",
+    "yük ilanı",
+    "boş araç",
+    "nakliyeci",
+    "yük bul",
+    "kamyon yükü",
+    "Türkiye nakliye",
+    "YÜKLİN",
+  ],
+
+  alternates: {
+    canonical: "https://yuklin.com.tr",
+  },
+
+  openGraph: {
+    title: "YÜKLİN | Yükünü Paylaş, En Uygun Teklifi Bul",
+    description:
+      "Yük ilanı oluştur, boş araçları bul ve nakliye tekliflerini karşılaştır.",
+    url: "https://yuklin.com.tr",
+    siteName: "YÜKLİN",
+    locale: "tr_TR",
+    type: "website",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
