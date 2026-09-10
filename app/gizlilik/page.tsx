@@ -1,290 +1,316 @@
 export default function GizlilikPage() {
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-6 sm:p-10">
-
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-700">
-          Gizlilik Politikası
-        </h1>
-
-        <p className="text-gray-500 mt-3">
-          Son güncelleme: 9 Eylül 2026
-        </p>
-
-        <div className="mt-8 space-y-8 text-gray-700 leading-7">
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              1. Genel
-            </h2>
-
-            <p>
-              Bu Gizlilik Politikası, YÜKLİN internet sitesini ve
-              YÜKLİN üzerinden sunulan hizmetleri kullanan kişilerin
-              kişisel bilgilerinin nasıl toplandığını, kullanıldığını,
-              saklandığını ve korunduğunu açıklamak amacıyla
-              hazırlanmıştır.
+    <main className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-10">
+          <div className="mb-10 border-b border-gray-200 pb-8">
+            <p className="mb-3 text-sm font-bold uppercase tracking-wider text-blue-600">
+              YÜKLİN
             </p>
 
-            <p className="mt-3">
-              YÜKLİN internet sitesi:
-              {" "}
-              <strong>https://yuklin.com.tr</strong>
+            <h1 className="text-3xl font-black text-gray-950 sm:text-4xl">
+              Gizlilik Politikası
+            </h1>
+
+            <p className="mt-4 text-gray-600">
+              Son güncelleme: 10 Eylül 2026
             </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              2. Toplanabilecek Bilgiler
-            </h2>
-
-            <p>
-              Platformun kullanımı sırasında, kullanılan özelliğe göre
-              aşağıdaki bilgiler toplanabilir:
-            </p>
-
-            <ul className="list-disc pl-6 mt-3 space-y-2">
-              <li>Ad ve soyad bilgisi</li>
-              <li>E-posta adresi</li>
-              <li>Telefon numarası</li>
-              <li>Kullanıcı hesap bilgileri</li>
-              <li>Yük ilanı bilgileri</li>
-              <li>Boş araç ilanı bilgileri</li>
-              <li>Teklif bilgileri</li>
-              <li>Anlaşma ve taşıma bilgileri</li>
-              <li>Mesajlaşma içerikleri</li>
-              <li>Puanlama ve değerlendirmeler</li>
-              <li>Teknik ve güvenlik amaçlı kayıtlar</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              3. Bilgilerin Kullanım Amaçları
-            </h2>
-
-            <p>
-              Toplanan bilgiler aşağıdaki amaçlarla kullanılabilir:
-            </p>
-
-            <ul className="list-disc pl-6 mt-3 space-y-2">
-              <li>Kullanıcı hesabının oluşturulması ve yönetilmesi</li>
-              <li>Kimlik doğrulama ve oturum işlemlerinin yürütülmesi</li>
-              <li>Yük ve boş araç ilanlarının yayınlanması</li>
-              <li>Teklif süreçlerinin yürütülmesi</li>
-              <li>Anlaşmaların oluşturulması</li>
-              <li>Kullanıcılar arasında mesajlaşmanın sağlanması</li>
-              <li>Teslimat ve taşıma sürecinin takip edilmesi</li>
-              <li>Bildirimlerin gösterilmesi</li>
-              <li>Puanlama ve değerlendirme sisteminin işletilmesi</li>
-              <li>Güvenlik ve kötüye kullanım kontrollerinin yapılması</li>
-              <li>Teknik sorunların giderilmesi</li>
-              <li>Hizmet kalitesinin geliştirilmesi</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              4. Firebase ve Teknik Altyapı
-            </h2>
-
-            <p>
-              YÜKLİN, kullanıcı doğrulama, veritabanı ve bazı teknik
-              hizmetler için üçüncü taraf bulut ve altyapı
-              hizmetlerinden yararlanabilir.
-            </p>
-
-            <p className="mt-3">
-              Bu hizmet sağlayıcıların veri işleme faaliyetleri kendi
-              gizlilik politikaları ve yürürlükteki mevzuat kapsamında
-              gerçekleşebilir.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              5. Verilerin Paylaşılması
-            </h2>
-
-            <p>
-              Kişisel bilgiler, hizmetin yürütülmesi için gerekli
-              olduğu ölçüde teknik hizmet sağlayıcılarla ve taşıma
-              anlaşmasının tarafı olan kullanıcılarla paylaşılabilir.
-            </p>
-
-            <p className="mt-3">
-              Kanunen yetkili kamu kurum ve kuruluşlarının usulüne
-              uygun talepleri halinde ilgili bilgiler paylaşılabilir.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              6. Kullanıcılar Arası Bilgi Paylaşımı
-            </h2>
-
-            <p>
-              YÜKLİN, yük sahipleri ve taşıyıcıların iletişim kurmasını
-              sağlayan bir platformdur.
-            </p>
-
-            <p className="mt-3">
-              Kullanıcıların ilan, teklif, profil, anlaşma veya taşıma
-              süreci kapsamında paylaştığı bazı bilgiler diğer
-              kullanıcılar tarafından görüntülenebilir.
-            </p>
-
-            <p className="mt-3">
-              Kullanıcıların platform üzerinde gereksiz veya hassas
-              kişisel bilgileri paylaşmamaları önerilir.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              7. Veri Güvenliği
-            </h2>
-
-            <p>
-              Kullanıcı bilgilerinin yetkisiz erişim, değiştirme,
-              ifşa veya kayba karşı korunması amacıyla teknik ve
-              organizasyonel güvenlik önlemleri uygulanmaya çalışılır.
-            </p>
-
-            <p className="mt-3">
-              Bununla birlikte internet üzerinden gerçekleştirilen
-              hiçbir veri aktarımının tamamen risksiz olduğu garanti
-              edilemez.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              8. Hesap Güvenliği
-            </h2>
-
-            <p>
-              Kullanıcılar kendi hesap bilgilerinin ve şifrelerinin
-              gizliliğinden sorumludur.
-            </p>
-
-            <p className="mt-3">
-              Kullanıcı hesabında şüpheli bir işlem fark edilmesi
-              halinde YÜKLİN ile iletişime geçilmesi önerilir.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              9. Saklama Süresi
-            </h2>
-
-            <p>
-              Kişisel bilgiler; hizmetin sunulması, uyuşmazlıkların
-              çözülmesi, güvenliğin sağlanması ve yasal
-              yükümlülüklerin yerine getirilmesi için gerekli olan
-              süre boyunca saklanabilir.
-            </p>
-
-            <p className="mt-3">
-              Saklama sebebi ortadan kalktığında veriler yürürlükteki
-              mevzuata uygun şekilde silinebilir, yok edilebilir veya
-              anonim hale getirilebilir.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              10. Çocukların Gizliliği
-            </h2>
-
-            <p>
-              YÜKLİN hizmetleri, taşıma ve lojistik işlemleri amacıyla
-              tasarlanmıştır. Platformun reşit olmayan kişiler
-              tarafından kullanılmasına yönelik özel bir hizmet
-              sunulmamaktadır.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              11. Üçüncü Taraf Bağlantıları
-            </h2>
-
-            <p>
-              YÜKLİN içerisinde üçüncü taraf internet sitelerine veya
-              hizmetlere bağlantılar bulunabilir. Bu sitelerin
-              gizlilik uygulamalarından YÜKLİN sorumlu değildir.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              12. Politika Değişiklikleri
-            </h2>
-
-            <p>
-              Bu Gizlilik Politikası, hizmetlerde veya mevzuatta
-              meydana gelen değişikliklere bağlı olarak zaman zaman
-              güncellenebilir.
-            </p>
-
-            <p className="mt-3">
-              Güncel metin her zaman yuklin.com.tr üzerinden
-              yayımlanacaktır.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-extrabold text-gray-900 mb-3">
-              13. İletişim
-            </h2>
-
-            <p>
-              Gizlilik ve kişisel verilerle ilgili sorularınız için:
-            </p>
-
-            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-2xl p-4">
-              <p>
-                <strong>İletişim e-postası:</strong>{" "}
-                [ILETISIM E-POSTASI]
-              </p>
-
-              <p className="mt-2">
-                <strong>İnternet sitesi:</strong>{" "}
-                https://yuklin.com.tr
-              </p>
-            </div>
-          </section>
-
-          <section className="bg-yellow-50 border border-yellow-200 rounded-2xl p-5">
-            <h2 className="font-extrabold text-gray-900">
-              Not
-            </h2>
-
-            <p className="mt-2">
-              YÜKLİN'e ödeme sistemi, reklam, analiz araçları,
-              konum takibi veya farklı üçüncü taraf hizmetler
-              eklenmesi halinde bu politika güncellenmelidir.
-            </p>
-          </section>
-
-          <div className="pt-4 flex flex-col sm:flex-row gap-3">
-            <a
-              href="/kvkk"
-              className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-xl font-bold text-center"
-            >
-              KVKK Aydınlatma Metni
-            </a>
-
-            <a
-              href="/"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-center"
-            >
-              ← Ana Sayfaya Dön
-            </a>
           </div>
 
+          <div className="space-y-9 leading-7 text-gray-700">
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                1. Genel Bilgilendirme
+              </h2>
+
+              <p>
+                Bu Gizlilik Politikası, YÜKLİN platformunu kullanan kişilerin
+                kişisel verilerinin ve platform üzerindeki bilgilerinin hangi
+                amaçlarla kullanılabileceği konusunda genel bilgilendirme
+                sağlamak amacıyla hazırlanmıştır.
+              </p>
+
+              <p className="mt-3">
+                YÜKLİN; yük sahipleri, taşıma hizmeti sunan kullanıcılar ve
+                diğer platform kullanıcılarının yük ilanı, boş araç ilanı,
+                teklif, anlaşma ve iletişim süreçlerini dijital ortamda
+                yönetebilmelerine imkân sağlayan bir platformdur.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                2. Toplanabilecek Bilgiler
+              </h2>
+
+              <p>
+                Platformun kullanılması sırasında, kullanıcının sağladığı veya
+                hizmetin kullanımı kapsamında oluşan bazı bilgiler
+                işlenebilir.
+              </p>
+
+              <ul className="mt-3 list-disc space-y-2 pl-6">
+                <li>Ad ve soyad bilgileri,</li>
+                <li>E-posta adresi,</li>
+                <li>Telefon numarası gibi iletişim bilgileri,</li>
+                <li>Kullanıcı hesabına ilişkin bilgiler,</li>
+                <li>Profil kapsamında kullanıcı tarafından girilen bilgiler,</li>
+                <li>Yük ilanı ve boş araç ilanı bilgileri,</li>
+                <li>Teklif ve anlaşma bilgileri,</li>
+                <li>Platform içi mesajlaşma kayıtları,</li>
+                <li>Değerlendirme ve puanlama bilgileri,</li>
+                <li>
+                  Hizmetin güvenliği ve çalışması için gerekli teknik kayıtlar.
+                </li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                3. Bilgilerin Kullanım Amaçları
+              </h2>
+
+              <p>
+                Toplanan bilgiler, YÜKLİN hizmetlerinin sunulması ve platformun
+                güvenli şekilde işletilmesi amacıyla kullanılabilir.
+              </p>
+
+              <ul className="mt-3 list-disc space-y-2 pl-6">
+                <li>Kullanıcı hesabının oluşturulması ve yönetilmesi,</li>
+                <li>Kullanıcı kimliğinin ve hesabının doğrulanması,</li>
+                <li>Yük ve boş araç ilanlarının yayınlanması,</li>
+                <li>Teklif süreçlerinin yürütülmesi,</li>
+                <li>Anlaşmaların oluşturulması ve yönetilmesi,</li>
+                <li>Kullanıcılar arasındaki iletişimin sağlanması,</li>
+                <li>Bildirimlerin kullanıcıya ulaştırılması,</li>
+                <li>Teslimat süreçlerinin takip edilmesi,</li>
+                <li>Değerlendirme ve puanlama sisteminin işletilmesi,</li>
+                <li>Platform güvenliğinin sağlanması,</li>
+                <li>Hata, kötüye kullanım ve güvenlik sorunlarının önlenmesi,</li>
+                <li>Hizmet kalitesinin geliştirilmesi.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                4. Bilgilerin Paylaşılması
+              </h2>
+
+              <p>
+                Kullanıcı bilgileri, hizmetin sunulması için gerekli olduğu
+                ölçüde platformun ilgili özelliklerinde diğer kullanıcılarla
+                paylaşılabilir.
+              </p>
+
+              <p className="mt-3">
+                Örneğin ilan, teklif, anlaşma, profil, değerlendirme ve
+                iletişim süreçlerinin çalışabilmesi için ilgili bilgilerin
+                taraflar arasında görüntülenmesi gerekebilir.
+              </p>
+
+              <p className="mt-3">
+                Kişisel bilgiler; yasal yükümlülükler, yetkili kamu
+                kurumlarının hukuka uygun talepleri veya hizmetin teknik olarak
+                sunulması için gerekli durumlar dışında amaç dışı şekilde
+                paylaşılmaz.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                5. Üçüncü Taraf Hizmetler
+              </h2>
+
+              <p>
+                YÜKLİN'in çalışabilmesi için barındırma, kimlik doğrulama, veri
+                saklama, güvenlik, alan adı, analiz veya benzeri teknik
+                hizmetler sağlayan üçüncü taraf hizmetlerden
+                yararlanılabilir.
+              </p>
+
+              <p className="mt-3">
+                Bu hizmet sağlayıcıların kendi gizlilik politikaları ve hizmet
+                koşulları bulunabilir.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                6. Verilerin Saklanması
+              </h2>
+
+              <p>
+                Kullanıcı bilgileri; hizmetin sunulması, kullanıcı hesabının
+                işletilmesi, anlaşmazlıkların çözülmesi, güvenliğin sağlanması
+                ve yasal yükümlülüklerin yerine getirilmesi için gerekli olan
+                süre boyunca saklanabilir.
+              </p>
+
+              <p className="mt-3">
+                Saklama süresinin sona ermesi veya verinin işlenmesini
+                gerektiren sebebin ortadan kalkması halinde bilgiler, yürürlükteki
+                mevzuatın gerektirdiği şekilde silinebilir, yok edilebilir veya
+                anonim hale getirilebilir.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                7. Veri Güvenliği
+              </h2>
+
+              <p>
+                Kullanıcı bilgilerinin yetkisiz erişim, değiştirme, açıklama
+                veya kayba karşı korunması amacıyla makul teknik ve idari
+                tedbirlerin uygulanması hedeflenir.
+              </p>
+
+              <p className="mt-3">
+                Bununla birlikte internet üzerinden gerçekleştirilen hiçbir
+                veri aktarımının veya elektronik veri saklama yönteminin
+                tamamen risksiz olduğu garanti edilemez.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                8. Hesap Güvenliği
+              </h2>
+
+              <p>
+                Kullanıcılar kendi hesap bilgilerinin ve şifrelerinin
+                gizliliğinden sorumludur.
+              </p>
+
+              <p className="mt-3">
+                Kullanıcı, hesabında yetkisiz bir kullanım veya güvenlik sorunu
+                fark etmesi halinde YÜKLİN ile iletişime geçebilir.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                9. Kullanıcı Hakları
+              </h2>
+
+              <p>
+                Kullanıcılar, yürürlükteki kişisel verilerin korunmasına
+                ilişkin mevzuat kapsamında kendileriyle ilgili kişisel
+                verilere ilişkin haklara sahip olabilir.
+              </p>
+
+              <p className="mt-3">
+                Kişisel verilerinizle ilgili taleplerinizi aşağıdaki iletişim
+                adresinden YÜKLİN'e iletebilirsiniz.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                10. Çerezler ve Benzeri Teknolojiler
+              </h2>
+
+              <p>
+                YÜKLİN, platformun doğru çalışmasını sağlamak, oturum ve
+                güvenlik işlemlerini yürütmek ve kullanıcı deneyimini
+                geliştirmek amacıyla çerezler veya benzeri teknolojiler
+                kullanabilir.
+              </p>
+
+              <p className="mt-3">
+                Ayrıntılı bilgi için YÜKLİN Çerez Politikası incelenebilir.
+              </p>
+
+              <a
+                href="/cerez-politikasi"
+                className="mt-3 inline-block font-bold text-blue-600 hover:underline"
+              >
+                Çerez Politikası
+              </a>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                11. Çocukların Gizliliği
+              </h2>
+
+              <p>
+                Platform, hukuken hizmeti kullanabilecek kişiler tarafından
+                kullanılmalıdır. YÜKLİN, mevzuatın gerektirdiği durumlarda
+                kullanıcıların kişisel verilerinin korunması için gerekli
+                işlemleri uygulayabilir.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                12. Politika Değişiklikleri
+              </h2>
+
+              <p>
+                Bu Gizlilik Politikası; mevzuat, platform özellikleri veya
+                hizmet süreçlerindeki değişikliklere bağlı olarak
+                güncellenebilir.
+              </p>
+
+              <p className="mt-3">
+                Güncel metin YÜKLİN platformunda yayınlandığı tarihten itibaren
+                geçerli olur.
+              </p>
+            </section>
+
+            <section className="rounded-2xl border border-blue-100 bg-blue-50 p-5">
+              <h2 className="mb-3 text-xl font-extrabold text-gray-900">
+                13. İletişim
+              </h2>
+
+              <p>
+                Gizlilik Politikası veya kişisel verilerinizle ilgili soru ve
+                talepleriniz için bizimle iletişime geçebilirsiniz.
+              </p>
+
+              <p className="mt-3">
+                <strong>E-posta:</strong>{" "}
+                <a
+                  href="mailto:yuklin.destek@gmail.com"
+                  className="font-bold text-blue-600 hover:underline"
+                >
+                  yuklin.destek@gmail.com
+                </a>
+              </p>
+            </section>
+
+            <section className="border-t border-gray-200 pt-6">
+              <p className="text-sm text-gray-500">
+                Bu sayfa YÜKLİN platformunun Gizlilik Politikası hakkında
+                bilgilendirme amacıyla hazırlanmıştır.
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-4 text-sm font-semibold">
+                <a href="/kvkk" className="text-blue-600 hover:underline">
+                  KVKK
+                </a>
+
+                <a
+                  href="/kullanim-kosullari"
+                  className="text-blue-600 hover:underline"
+                >
+                  Kullanım Koşulları
+                </a>
+
+                <a
+                  href="/cerez-politikasi"
+                  className="text-blue-600 hover:underline"
+                >
+                  Çerez Politikası
+                </a>
+
+                <a href="/" className="text-blue-600 hover:underline">
+                  Ana Sayfa
+                </a>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </main>

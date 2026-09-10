@@ -34,12 +34,12 @@ export default function KvkkPage() {
               </p>
 
               <p>
-                İletişim e-postası: [ILETISIM E-POSTASI]
+                İletişim e-postası: yuklin.destek@gmail.com
               </p>
             </div>
 
             <p className="mt-4">
-              Yukarıdaki köşeli parantezli alanlar site gerçek
+              Yukarıdaki veri sorumlusu ad soyad alanı, site gerçek
               kullanıcı kullanımına açılmadan önce veri sorumlusunun
               gerçek bilgileriyle doldurulmalıdır.
             </p>
@@ -321,7 +321,7 @@ export default function KvkkPage() {
 
               <li>
                 kanunda belirtilen diğer haklarınızı kullanma
-              hakkına sahipsiniz.
+                hakkına sahipsiniz.
               </li>
             </ul>
           </section>
@@ -339,7 +339,12 @@ export default function KvkkPage() {
             <div className="mt-4 bg-blue-50 border border-blue-200 rounded-2xl p-4">
               <p>
                 <strong>E-posta:</strong>{" "}
-                [ILETISIM E-POSTASI]
+                <a
+                  href="mailto:yuklin.destek@gmail.com"
+                  className="text-blue-600 font-bold hover:underline"
+                >
+                  yuklin.destek@gmail.com
+                </a>
               </p>
 
               <p className="mt-2">
