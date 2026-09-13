@@ -15,7 +15,6 @@ import {
 } from "firebase/firestore";
 import {
   onAuthStateChanged,
-  reload,
   User,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
@@ -59,11 +58,6 @@ export default function BosAracPage() {
     profilYukleniyor,
     setProfilYukleniyor,
   ] = useState(true);
-
-  const [
-    emailDogrulandi,
-    setEmailDogrulandi,
-  ] = useState(false);
 
   const [
     bulunduguYer,
@@ -188,7 +182,7 @@ export default function BosAracPage() {
   ] = useState("");
 
   // ==========================================
-  // KULLANICI + E-POSTA DOĞRULAMA
+  // KULLANICI
   // ==========================================
 
   useEffect(() => {
@@ -199,123 +193,92 @@ export default function BosAracPage() {
     const unsubscribeAuth =
       onAuthStateChanged(
         auth,
-        async (currentUser) => {
+        (currentUser) => {
           if (!currentUser) {
             setUser(null);
-            setEmailDogrulandi(false);
             setYuklerim([]);
             setProfilYukleniyor(false);
             return;
           }
 
-          try {
-            await reload(
-              currentUser
+          setUser(currentUser);
+
+          const yukQuery =
+            query(
+              collection(
+                db,
+                "yukler"
+              ),
+              where(
+                "userId",
+                "==",
+                currentUser.uid
+              )
             );
 
-            await currentUser.getIdToken(
-              true
+          unsubscribeYukler =
+            onSnapshot(
+              yukQuery,
+              (snapshot) => {
+                const liste =
+                  snapshot.docs
+                    .map(
+                      (item) => ({
+                        id:
+                          item.id,
+
+                        ...(item.data() as Omit<
+                          Yuk,
+                          "id"
+                        >),
+                      })
+                    )
+                    .filter(
+                      (item) =>
+                        item.durum ===
+                        "Açık"
+                    );
+
+                liste.sort(
+                  (
+                    a: any,
+                    b: any
+                  ) => {
+                    const aTarih =
+                      a.createdAt
+                        ?.seconds ||
+                      0;
+
+                    const bTarih =
+                      b.createdAt
+                        ?.seconds ||
+                      0;
+
+                    return (
+                      bTarih -
+                      aTarih
+                    );
+                  }
+                );
+
+                setYuklerim(
+                  liste
+                );
+
+                setProfilYukleniyor(
+                  false
+                );
+              },
+              () => {
+                setYuklerim(
+                  []
+                );
+
+                setProfilYukleniyor(
+                  false
+                );
+              }
             );
-
-            const guncelUser =
-              auth.currentUser ||
-              currentUser;
-
-            setUser(
-              guncelUser
-            );
-
-            setEmailDogrulandi(
-              guncelUser.emailVerified ===
-                true
-            );
-
-            // ==================================
-            // KENDİ YÜK İLANLARINI GETİR
-            // ==================================
-
-            const yukQuery =
-              query(
-                collection(
-                  db,
-                  "yukler"
-                ),
-                where(
-                  "userId",
-                  "==",
-                  guncelUser.uid
-                )
-              );
-
-            unsubscribeYukler =
-              onSnapshot(
-                yukQuery,
-                (snapshot) => {
-                  const liste =
-                    snapshot.docs
-                      .map(
-                        (item) => ({
-                          id:
-                            item.id,
-
-                          ...(item.data() as Omit<
-                            Yuk,
-                            "id"
-                          >),
-                        })
-                      )
-                      .filter(
-                        (item) =>
-                          item.durum ===
-                          "Açık"
-                      );
-
-                  liste.sort(
-                    (
-                      a: any,
-                      b: any
-                    ) => {
-                      const aTarih =
-                        a.createdAt
-                          ?.seconds ||
-                        0;
-
-                      const bTarih =
-                        b.createdAt
-                          ?.seconds ||
-                        0;
-
-                      return (
-                        bTarih -
-                        aTarih
-                      );
-                    }
-                  );
-
-                  setYuklerim(
-                    liste
-                  );
-                },
-                () => {
-                  setYuklerim(
-                    []
-                  );
-                }
-              );
-          } catch {
-            setUser(
-              currentUser
-            );
-
-            setEmailDogrulandi(
-              currentUser.emailVerified ===
-                true
-            );
-          } finally {
-            setProfilYukleniyor(
-              false
-            );
-          }
         }
       );
 
@@ -412,21 +375,13 @@ export default function BosAracPage() {
   }, []);
 
   // ==========================================
-  // E-POSTA KONTROLÜ
+  // GİRİŞ KONTROLÜ
   // ==========================================
 
-  function emailKontrolEt() {
+  function girisKontrolEt() {
     if (!user) {
       setHata(
         "Bu işlem için önce giriş yapmalısın."
-      );
-
-      return false;
-    }
-
-    if (!emailDogrulandi) {
-      setHata(
-        "Bu işlem için önce e-posta adresini doğrulamalısın."
       );
 
       return false;
@@ -489,7 +444,7 @@ export default function BosAracPage() {
     setHata("");
     setBasari("");
 
-    if (!emailKontrolEt()) {
+    if (!girisKontrolEt()) {
       return;
     }
 
@@ -603,7 +558,7 @@ export default function BosAracPage() {
         "permission-denied"
       ) {
         setHata(
-          "Bu işlem için e-posta adresinin doğrulanmış olması gerekiyor."
+          "Firebase bu işleme izin vermedi."
         );
       } else {
         setHata(
@@ -627,7 +582,7 @@ export default function BosAracPage() {
     setHata("");
     setBasari("");
 
-    if (!emailKontrolEt()) {
+    if (!girisKontrolEt()) {
       return;
     }
 
@@ -699,7 +654,7 @@ export default function BosAracPage() {
     setHata("");
     setBasari("");
 
-    if (!emailKontrolEt()) {
+    if (!girisKontrolEt()) {
       return;
     }
 
@@ -1018,7 +973,7 @@ export default function BosAracPage() {
         "permission-denied"
       ) {
         setHata(
-          "Firebase yük teklifine izin vermedi. E-posta doğrulamanı ve ilanların açık olduğunu kontrol et."
+          "Firebase yük teklifine izin vermedi. İlanların hâlâ açık olduğunu kontrol et."
         );
       } else {
         setHata(
@@ -1046,7 +1001,7 @@ export default function BosAracPage() {
     setHata("");
     setBasari("");
 
-    if (!emailKontrolEt()) {
+    if (!girisKontrolEt()) {
       return;
     }
 
@@ -1132,7 +1087,7 @@ export default function BosAracPage() {
     setHata("");
     setBasari("");
 
-    if (!emailKontrolEt()) {
+    if (!girisKontrolEt()) {
       return;
     }
 
@@ -1224,7 +1179,7 @@ export default function BosAracPage() {
         "permission-denied"
       ) {
         setHata(
-          "Bu işlem için doğrulanmış bir e-posta adresi gerekiyor."
+          "Firebase bu işleme izin vermedi."
         );
       } else {
         setHata(
@@ -1248,7 +1203,7 @@ export default function BosAracPage() {
     setHata("");
     setBasari("");
 
-    if (!emailKontrolEt()) {
+    if (!girisKontrolEt()) {
       return;
     }
 
@@ -1327,7 +1282,7 @@ export default function BosAracPage() {
     setHata("");
     setBasari("");
 
-    if (!emailKontrolEt()) {
+    if (!girisKontrolEt()) {
       return;
     }
 
@@ -1544,39 +1499,9 @@ export default function BosAracPage() {
           </p>
 
           <p className="text-sm font-semibold text-green-600 mt-2">
-            E-postasını doğrulamış tüm kullanıcılar boş araç ilanı verebilir ve araçlara yük teklif edebilir.
+            Giriş yapan tüm kullanıcılar boş araç ilanı verebilir ve araçlara yük teklif edebilir.
           </p>
         </div>
-
-        {/* E-POSTA UYARISI */}
-
-        {!emailDogrulandi && (
-          <div className="bg-yellow-50 border border-yellow-300 rounded-2xl p-5 mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <p className="font-extrabold text-yellow-800 text-lg">
-                  📧 E-posta adresini doğrulamalısın
-                </p>
-
-                <p className="text-yellow-700 mt-1">
-                  Araç ilanı oluşturmak ve yük teklif etmek için e-posta doğrulaması gerekiyor.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  router.push(
-                    "/profil"
-                  );
-                }}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-3 rounded-xl font-bold"
-              >
-                📧 E-postamı Doğrula
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* HATA */}
 
@@ -1765,16 +1690,11 @@ export default function BosAracPage() {
                 onClick={
                   aracOlustur
                 }
-                disabled={
-                  loading ||
-                  !emailDogrulandi
-                }
+                disabled={loading}
                 className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-4 rounded-xl font-extrabold text-lg"
               >
                 {loading
                   ? "⏳ İlan yayınlanıyor..."
-                  : !emailDogrulandi
-                  ? "🔒 Önce E-postanı Doğrula"
                   : "🚛 Boş Aracı Yayınla"}
               </button>
             </div>
@@ -2099,9 +2019,6 @@ export default function BosAracPage() {
                                     arac
                                   );
                                 }}
-                                disabled={
-                                  !emailDogrulandi
-                                }
                                 className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-4 rounded-xl font-extrabold text-lg"
                               >
                                 📦 Yük Teklif Et
@@ -2109,219 +2026,218 @@ export default function BosAracPage() {
 
                               {/* AÇIK YÜK YOK */}
 
-                              {emailDogrulandi &&
-                                yuklerim.length ===
-                                  0 && (
-                                  <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-                                    <p className="text-yellow-700 font-bold">
-                                      📦 Açık yük ilanınız yok.
-                                    </p>
+                              {yuklerim.length ===
+                                0 && (
+                                <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                                  <p className="text-yellow-700 font-bold">
+                                    📦 Açık yük ilanınız yok.
+                                  </p>
 
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        router.push(
-                                          "/yuk-ver"
-                                        );
-                                      }}
-                                      className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-bold"
-                                    >
-                                      ➕ Yük İlanı Ver
-                                    </button>
-                                  </div>
-                                )}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      router.push(
+                                        "/yuk-ver"
+                                      );
+                                    }}
+                                    className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-bold"
+                                  >
+                                    ➕ Yük İlanı Ver
+                                  </button>
+                                </div>
+                              )}
 
                               {/* TEKLİF PANELİ */}
 
                               {teklifPaneliAcik &&
                                 yuklerim.length >
                                   0 && (
-                                  <div className="mt-4 bg-orange-50 border border-orange-200 rounded-2xl p-5">
-                                    <h4 className="text-lg font-extrabold text-orange-700">
-                                      📦 Araca Yük Teklif Et
-                                    </h4>
+                                <div className="mt-4 bg-orange-50 border border-orange-200 rounded-2xl p-5">
+                                  <h4 className="text-lg font-extrabold text-orange-700">
+                                    📦 Araca Yük Teklif Et
+                                  </h4>
 
-                                    <p className="text-gray-600 mt-2">
-                                      Açık yük ilanlarından birini seç.
-                                    </p>
+                                  <p className="text-gray-600 mt-2">
+                                    Açık yük ilanlarından birini seç.
+                                  </p>
 
-                                    <select
-                                      value={
-                                        secilenYukId
-                                      }
-                                      onChange={(
+                                  <select
+                                    value={
+                                      secilenYukId
+                                    }
+                                    onChange={(
+                                      event
+                                    ) => {
+                                      setSecilenYukId(
                                         event
-                                      ) => {
-                                        setSecilenYukId(
-                                          event
-                                            .currentTarget
-                                            .value
-                                        );
-                                      }}
-                                      className="w-full mt-4 border border-orange-200 rounded-xl p-3 bg-white"
-                                    >
-                                      <option value="">
-                                        Yük ilanını seç
-                                      </option>
+                                          .currentTarget
+                                          .value
+                                      );
+                                    }}
+                                    className="w-full mt-4 border border-orange-200 rounded-xl p-3 bg-white"
+                                  >
+                                    <option value="">
+                                      Yük ilanını seç
+                                    </option>
 
-                                      {yuklerim.map(
-                                        (
-                                          yuk
-                                        ) => (
-                                          <option
-                                            key={
-                                              yuk.id
-                                            }
-                                            value={
-                                              yuk.id
-                                            }
-                                          >
+                                    {yuklerim.map(
+                                      (
+                                        yuk
+                                      ) => (
+                                        <option
+                                          key={
+                                            yuk.id
+                                          }
+                                          value={
+                                            yuk.id
+                                          }
+                                        >
+                                          {
+                                            yuk.nereden
+                                          }{" "}
+                                          →{" "}
+                                          {
+                                            yuk.nereye
+                                          }{" "}
+                                          |{" "}
+                                          {
+                                            yuk.yukTuru
+                                          }{" "}
+                                          |{" "}
+                                          {fiyatGoster(
+                                            yuk.fiyat,
+                                            yuk.paraBirimi
+                                          )}
+                                        </option>
+                                      )
+                                    )}
+                                  </select>
+
+                                  {secilenYukId &&
+                                    (() => {
+                                      const secilen =
+                                        yuklerim.find(
+                                          (
+                                            yuk
+                                          ) =>
+                                            yuk.id ===
+                                            secilenYukId
+                                        );
+
+                                      if (
+                                        !secilen
+                                      ) {
+                                        return null;
+                                      }
+
+                                      return (
+                                        <div className="mt-4 bg-white rounded-xl p-4 border border-orange-100 space-y-2">
+                                          <p className="font-extrabold text-blue-700">
+                                            📍{" "}
                                             {
-                                              yuk.nereden
+                                              secilen.nereden
                                             }{" "}
                                             →{" "}
                                             {
-                                              yuk.nereye
-                                            }{" "}
-                                            |{" "}
+                                              secilen.nereye
+                                            }
+                                          </p>
+
+                                          <p>
+                                            📦{" "}
                                             {
-                                              yuk.yukTuru
-                                            }{" "}
-                                            |{" "}
+                                              secilen.yukTuru
+                                            }
+                                          </p>
+
+                                          <p>
+                                            ⚖️{" "}
+                                            {
+                                              secilen.agirlik
+                                            }
+                                          </p>
+
+                                          <p className="font-extrabold text-green-600">
+                                            💰{" "}
                                             {fiyatGoster(
-                                              yuk.fiyat,
-                                              yuk.paraBirimi
+                                              secilen.fiyat,
+                                              secilen.paraBirimi
                                             )}
-                                          </option>
-                                        )
-                                      )}
-                                    </select>
+                                          </p>
+                                        </div>
+                                      );
+                                    })()}
 
-                                    {secilenYukId &&
-                                      (() => {
-                                        const secilen =
-                                          yuklerim.find(
-                                            (
-                                              yuk
-                                            ) =>
-                                              yuk.id ===
-                                              secilenYukId
-                                          );
-
-                                        if (
-                                          !secilen
-                                        ) {
-                                          return null;
-                                        }
-
-                                        return (
-                                          <div className="mt-4 bg-white rounded-xl p-4 border border-orange-100 space-y-2">
-                                            <p className="font-extrabold text-blue-700">
-                                              📍{" "}
-                                              {
-                                                secilen.nereden
-                                              }{" "}
-                                              →{" "}
-                                              {
-                                                secilen.nereye
-                                              }
-                                            </p>
-
-                                            <p>
-                                              📦{" "}
-                                              {
-                                                secilen.yukTuru
-                                              }
-                                            </p>
-
-                                            <p>
-                                              ⚖️{" "}
-                                              {
-                                                secilen.agirlik
-                                              }
-                                            </p>
-
-                                            <p className="font-extrabold text-green-600">
-                                              💰{" "}
-                                              {fiyatGoster(
-                                                secilen.fiyat,
-                                                secilen.paraBirimi
-                                              )}
-                                            </p>
-                                          </div>
-                                        );
-                                      })()}
-
-                                    <textarea
-                                      value={
-                                        yukTeklifMesaji
-                                      }
-                                      onChange={(
+                                  <textarea
+                                    value={
+                                      yukTeklifMesaji
+                                    }
+                                    onChange={(
+                                      event
+                                    ) => {
+                                      setYukTeklifMesaji(
                                         event
-                                      ) => {
-                                        setYukTeklifMesaji(
-                                          event
-                                            .currentTarget
-                                            .value
+                                          .currentTarget
+                                          .value
+                                      );
+                                    }}
+                                    rows={3}
+                                    maxLength={500}
+                                    placeholder="Araç sahibine mesajın... Örn: Yüküm güzergahınıza uygun, ilgilenirseniz görüşebiliriz."
+                                    className="w-full mt-4 border border-orange-200 rounded-xl p-3 resize-none"
+                                  />
+
+                                  <p className="text-right text-xs text-gray-400 mt-1">
+                                    {
+                                      yukTeklifMesaji.length
+                                    }
+                                    /500
+                                  </p>
+
+                                  <div className="grid grid-cols-2 gap-3 mt-4">
+                                    <button
+                                      type="button"
+                                      disabled={
+                                        yukTeklifiGonderiliyor ||
+                                        !secilenYukId
+                                      }
+                                      onClick={() => {
+                                        yukTeklifiGonder(
+                                          arac
                                         );
                                       }}
-                                      rows={3}
-                                      maxLength={500}
-                                      placeholder="Araç sahibine mesajın... Örn: Yüküm güzergahınıza uygun, ilgilenirseniz görüşebiliriz."
-                                      className="w-full mt-4 border border-orange-200 rounded-xl p-3 resize-none"
-                                    />
+                                      className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white px-4 py-3 rounded-xl font-extrabold"
+                                    >
+                                      {yukTeklifiGonderiliyor
+                                        ? "⏳ Gönderiliyor..."
+                                        : "📨 Teklifi Gönder"}
+                                    </button>
 
-                                    <p className="text-right text-xs text-gray-400 mt-1">
-                                      {
-                                        yukTeklifMesaji.length
+                                    <button
+                                      type="button"
+                                      disabled={
+                                        yukTeklifiGonderiliyor
                                       }
-                                      /500
-                                    </p>
+                                      onClick={() => {
+                                        setTeklifVerilenAracId(
+                                          ""
+                                        );
 
-                                    <div className="grid grid-cols-2 gap-3 mt-4">
-                                      <button
-                                        type="button"
-                                        disabled={
-                                          yukTeklifiGonderiliyor ||
-                                          !secilenYukId
-                                        }
-                                        onClick={() => {
-                                          yukTeklifiGonder(
-                                            arac
-                                          );
-                                        }}
-                                        className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white px-4 py-3 rounded-xl font-extrabold"
-                                      >
-                                        {yukTeklifiGonderiliyor
-                                          ? "⏳ Gönderiliyor..."
-                                          : "📨 Teklifi Gönder"}
-                                      </button>
+                                        setSecilenYukId(
+                                          ""
+                                        );
 
-                                      <button
-                                        type="button"
-                                        disabled={
-                                          yukTeklifiGonderiliyor
-                                        }
-                                        onClick={() => {
-                                          setTeklifVerilenAracId(
-                                            ""
-                                          );
-
-                                          setSecilenYukId(
-                                            ""
-                                          );
-
-                                          setYukTeklifMesaji(
-                                            ""
-                                          );
-                                        }}
-                                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-3 rounded-xl font-bold"
-                                      >
-                                        ❌ Vazgeç
-                                      </button>
-                                    </div>
+                                        setYukTeklifMesaji(
+                                          ""
+                                        );
+                                      }}
+                                      className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-3 rounded-xl font-bold"
+                                    >
+                                      ❌ Vazgeç
+                                    </button>
                                   </div>
-                                )}
+                                </div>
+                              )}
 
                               {/* PROFİL + TELEFON */}
 
@@ -2381,8 +2297,7 @@ export default function BosAracPage() {
                                   }}
                                   disabled={
                                     islemYapiliyor !==
-                                      "" ||
-                                    !emailDogrulandi
+                                      ""
                                   }
                                   className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-3 rounded-xl font-bold"
                                 >
@@ -2398,8 +2313,7 @@ export default function BosAracPage() {
                                   }}
                                   disabled={
                                     islemYapiliyor !==
-                                      "" ||
-                                    !emailDogrulandi
+                                      ""
                                   }
                                   className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white px-4 py-3 rounded-xl font-bold"
                                 >
@@ -2415,8 +2329,7 @@ export default function BosAracPage() {
                                   }}
                                   disabled={
                                     islemYapiliyor !==
-                                      "" ||
-                                    !emailDogrulandi
+                                      ""
                                   }
                                   className="bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white px-4 py-3 rounded-xl font-bold"
                                 >
