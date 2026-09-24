@@ -445,7 +445,7 @@ export default function Header() {
   return (
     <header className="bg-white border-b shadow-sm sticky top-0 z-50">
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-5 py-3">
+      <div className="max-w-7xl mx-auto px-4 lg:px-5 py-2">
 
         <div className="flex items-center justify-between gap-3">
 
@@ -467,14 +467,11 @@ export default function Header() {
             }}
           >
 
-            <h1 className="text-2xl lg:text-3xl font-extrabold text-blue-700">
-              🚛 YÜKLİN
-            </h1>
-
-            <p className="text-xs text-gray-500 hidden xl:block">
-              Yükünü Paylaş, Teklifleri Karşılaştır,
-              Güvenle Taşıt.
-            </p>
+            <img
+              src="/yuklin-logo.png"
+              alt="YÜKLİN"
+              className="h-10 sm:h-11 lg:h-12 w-auto object-contain"
+            />
 
           </Link>
 
@@ -482,32 +479,32 @@ export default function Header() {
               MASAÜSTÜ MENÜ
           ====================================== */}
 
-          <nav className="hidden lg:flex items-center gap-2 xl:gap-3 font-semibold text-sm">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 font-semibold text-sm">
 
             <Link
               href="/"
-              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition"
+              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition whitespace-nowrap"
             >
               Ana Sayfa
             </Link>
 
             <Link
               href="/yuk-ver"
-              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition"
+              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition whitespace-nowrap"
             >
               📦 Yük İlanı
             </Link>
 
             <Link
               href="/ilanlar"
-              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition"
+              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition whitespace-nowrap"
             >
               📋 Yük İlanları
             </Link>
 
             <Link
               href="/bos-arac"
-              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition"
+              className="px-2 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition whitespace-nowrap"
             >
               🚛 Boş Araç
             </Link>

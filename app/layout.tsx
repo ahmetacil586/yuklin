@@ -27,6 +27,17 @@ export const metadata = {
     canonical: "https://yuklin.com.tr",
   },
 
+  icons: {
+    icon: [
+      {
+        url: "/favicon.png",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
+
   openGraph: {
     title: "YÜKLİN | Yükünü Paylaş, En Uygun Teklifi Bul",
     description:
@@ -35,6 +46,22 @@ export const metadata = {
     siteName: "YÜKLİN",
     locale: "tr_TR",
     type: "website",
+    images: [
+      {
+        url: "/yuklin-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "YÜKLİN - Yük ve Taşımacılık Platformu",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "YÜKLİN | Yükünü Paylaş, En Uygun Teklifi Bul",
+    description:
+      "Yük ilanı oluştur, boş araçları bul ve nakliye tekliflerini karşılaştır.",
+    images: ["/yuklin-logo.png"],
   },
 
   robots: {
