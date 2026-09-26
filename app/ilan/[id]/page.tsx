@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import {
   addDoc,
   collection,
@@ -8,11 +9,14 @@ import {
   getDoc,
   serverTimestamp,
 } from "firebase/firestore";
+
 import {
   onAuthStateChanged,
   User,
 } from "firebase/auth";
+
 import { useParams, useRouter } from "next/navigation";
+
 import { auth, db } from "../../firebase";
 
 export default function IlanDetayPage() {
@@ -31,6 +35,11 @@ export default function IlanDetayPage() {
   const [teklifMesaji, setTeklifMesaji] = useState("");
 
   const [mesaj, setMesaj] = useState("");
+  const [paylasimMesaji, setPaylasimMesaji] = useState("");
+
+  // ==========================================
+  // KULLANICI
+  // ==========================================
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(
@@ -42,6 +51,10 @@ export default function IlanDetayPage() {
 
     return () => unsubscribe();
   }, []);
+
+  // ==========================================
+  // İLANI GETİR
+  // ==========================================
 
   useEffect(() => {
     async function ilanGetir() {
@@ -80,6 +93,204 @@ export default function IlanDetayPage() {
     ilanGetir();
   }, [ilanId]);
 
+  // ==========================================
+  // FİYAT GÖSTER
+  // ==========================================
+
+  function fiyatGoster(
+    fiyat: number,
+    paraBirimi: string
+  ) {
+    const sembol =
+      paraBirimi === "USD"
+        ? "$"
+        : paraBirimi === "EUR"
+        ? "€"
+        : "₺";
+
+    return `${sembol}${Number(
+      fiyat || 0
+    ).toLocaleString("tr-TR")}`;
+  }
+
+  // ==========================================
+  // PAYLAŞIM LİNKİ
+  // ==========================================
+
+  function ilanLinkiOlustur() {
+    if (typeof window !== "undefined") {
+      return `${window.location.origin}/ilan/${ilanId}`;
+    }
+
+    return `https://yuklin.com.tr/ilan/${ilanId}`;
+  }
+
+  // ==========================================
+  // PAYLAŞIM METNİ
+  // ==========================================
+
+  function paylasimMetniOlustur() {
+    if (!ilan) {
+      return "";
+    }
+
+    return `🚛 YÜKLİN'de Yük İlanı
+
+📍 ${ilan.nereden || "-"} → ${ilan.nereye || "-"}
+📦 Yük: ${ilan.yukTuru || "-"}
+⚖️ Ağırlık: ${ilan.agirlik || "-"}
+💰 İstenen Ücret: ${fiyatGoster(
+      ilan.fiyat,
+      ilan.paraBirimi || "TRY"
+    )}
+
+İlanı incele:
+${ilanLinkiOlustur()}`;
+  }
+
+  // ==========================================
+  // WHATSAPP
+  // ==========================================
+
+  function whatsAppPaylas() {
+    const metin = encodeURIComponent(
+      paylasimMetniOlustur()
+    );
+
+    window.open(
+      `https://wa.me/?text=${metin}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+
+  // ==========================================
+  // FACEBOOK
+  // ==========================================
+
+  function facebookPaylas() {
+    const link = encodeURIComponent(
+      ilanLinkiOlustur()
+    );
+
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${link}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+
+  // ==========================================
+  // X
+  // ==========================================
+
+  function xPaylas() {
+    const metin = encodeURIComponent(
+      `🚛 YÜKLİN'de Yük İlanı
+
+📍 ${ilan?.nereden || "-"} → ${ilan?.nereye || "-"}
+📦 ${ilan?.yukTuru || "-"}`
+    );
+
+    const link = encodeURIComponent(
+      ilanLinkiOlustur()
+    );
+
+    window.open(
+      `https://twitter.com/intent/tweet?text=${metin}&url=${link}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+
+  // ==========================================
+  // LİNKİ KOPYALA
+  // ==========================================
+
+  async function baglantiyiKopyala() {
+    try {
+      await navigator.clipboard.writeText(
+        ilanLinkiOlustur()
+      );
+
+      setPaylasimMesaji(
+        "✅ İlan bağlantısı kopyalandı!"
+      );
+
+      window.setTimeout(() => {
+        setPaylasimMesaji("");
+      }, 2500);
+    } catch {
+      setPaylasimMesaji(
+        "❌ Bağlantı kopyalanamadı."
+      );
+
+      window.setTimeout(() => {
+        setPaylasimMesaji("");
+      }, 2500);
+    }
+  }
+
+  // ==========================================
+  // TELEFONDAN PAYLAŞ
+  // ==========================================
+
+  async function cihazdanPaylas() {
+    const link = ilanLinkiOlustur();
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `YÜKLİN | ${
+            ilan?.nereden || ""
+          } → ${ilan?.nereye || ""}`,
+
+          text: paylasimMetniOlustur(),
+
+          url: link,
+        });
+      } catch (error: any) {
+        if (error?.name !== "AbortError") {
+          setPaylasimMesaji(
+            "❌ Paylaşım açılamadı."
+          );
+
+          window.setTimeout(() => {
+            setPaylasimMesaji("");
+          }, 2500);
+        }
+      }
+
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(
+        paylasimMetniOlustur()
+      );
+
+      setPaylasimMesaji(
+        "📋 Paylaşım metni kopyalandı. Instagram, Messenger veya başka bir uygulamaya yapıştırabilirsin."
+      );
+
+      window.setTimeout(() => {
+        setPaylasimMesaji("");
+      }, 4000);
+    } catch {
+      setPaylasimMesaji(
+        "❌ Bu cihazda paylaşım özelliği kullanılamıyor."
+      );
+
+      window.setTimeout(() => {
+        setPaylasimMesaji("");
+      }, 3000);
+    }
+  }
+
+  // ==========================================
+  // TEKLİF GÖNDER
+  // ==========================================
+
   async function teklifGonder() {
     setMesaj("");
 
@@ -87,6 +298,7 @@ export default function IlanDetayPage() {
       setMesaj(
         "❌ Teklif vermek için önce giriş yapmalısın."
       );
+
       return;
     }
 
@@ -94,6 +306,7 @@ export default function IlanDetayPage() {
       setMesaj(
         "❌ İlan bulunamadı."
       );
+
       return;
     }
 
@@ -101,6 +314,7 @@ export default function IlanDetayPage() {
       setMesaj(
         "❌ Teklif fiyatını gir."
       );
+
       return;
     }
 
@@ -110,6 +324,7 @@ export default function IlanDetayPage() {
       setMesaj(
         "❌ Geçerli bir teklif fiyatı gir."
       );
+
       return;
     }
 
@@ -117,6 +332,7 @@ export default function IlanDetayPage() {
       setMesaj(
         "❌ Kendi ilanına teklif veremezsin."
       );
+
       return;
     }
 
@@ -134,7 +350,8 @@ export default function IlanDetayPage() {
           nakliyeciId:
             user.uid,
 
-          teklifFiyati: fiyat,
+          teklifFiyati:
+            fiyat,
 
           paraBirimi:
             ilan.paraBirimi || "TRY",
@@ -142,7 +359,8 @@ export default function IlanDetayPage() {
           mesaj:
             teklifMesaji.trim(),
 
-          durum: "Bekliyor",
+          durum:
+            "Bekliyor",
 
           createdAt:
             serverTimestamp(),
@@ -171,21 +389,9 @@ export default function IlanDetayPage() {
     }
   }
 
-  function fiyatGoster(
-    fiyat: number,
-    paraBirimi: string
-  ) {
-    const sembol =
-      paraBirimi === "USD"
-        ? "$"
-        : paraBirimi === "EUR"
-        ? "€"
-        : "₺";
-
-    return `${sembol}${Number(
-      fiyat || 0
-    ).toLocaleString("tr-TR")}`;
-  }
+  // ==========================================
+  // YÜKLENİYOR
+  // ==========================================
 
   if (yukleniyor) {
     return (
@@ -198,6 +404,10 @@ export default function IlanDetayPage() {
       </main>
     );
   }
+
+  // ==========================================
+  // İLAN YOK
+  // ==========================================
 
   if (!ilan) {
     return (
@@ -212,6 +422,7 @@ export default function IlanDetayPage() {
           </h1>
 
           <button
+            type="button"
             onClick={() =>
               router.push("/ilanlar")
             }
@@ -224,16 +435,25 @@ export default function IlanDetayPage() {
     );
   }
 
+  // ==========================================
+  // KENDİ İLANI MI?
+  // ==========================================
+
   const kendiIlanin =
     user && ilan.userId === user.uid;
 
+  // ==========================================
+  // SAYFA
+  // ==========================================
+
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-6">
-
       <div className="max-w-4xl mx-auto">
 
         {/* GERİ */}
+
         <button
+          type="button"
           onClick={() =>
             router.push("/ilanlar")
           }
@@ -243,10 +463,12 @@ export default function IlanDetayPage() {
         </button>
 
         {/* İLAN */}
+
         <div className="bg-white rounded-3xl shadow-xl p-8">
 
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          {/* ÜST */}
 
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="text-4xl font-extrabold text-blue-700">
                 📍 {ilan.nereden} →{" "}
@@ -261,12 +483,11 @@ export default function IlanDetayPage() {
             <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold">
               🟢 {ilan.durum || "Açık"}
             </span>
-
           </div>
 
           {/* BİLGİLER */}
-          <div className="grid md:grid-cols-2 gap-5 mt-8">
 
+          <div className="grid md:grid-cols-2 gap-5 mt-8">
             <div className="bg-gray-50 rounded-2xl p-5">
               <p className="text-gray-500">
                 📦 Yük Türü
@@ -309,13 +530,12 @@ export default function IlanDetayPage() {
                 {ilan.durum || "Açık"}
               </p>
             </div>
-
           </div>
 
           {/* AÇIKLAMA */}
+
           {ilan.aciklama && (
             <div className="mt-6 bg-gray-50 rounded-2xl p-6">
-
               <h2 className="font-extrabold text-lg">
                 📝 Açıklama
               </h2>
@@ -323,14 +543,83 @@ export default function IlanDetayPage() {
               <p className="text-gray-600 mt-2 whitespace-pre-line">
                 {ilan.aciklama}
               </p>
-
             </div>
           )}
 
+          {/* ======================================
+              PAYLAŞIM
+          ====================================== */}
+
+          <div className="mt-8 border border-purple-200 bg-purple-50 rounded-2xl p-6">
+            <div className="flex items-start gap-3">
+              <div className="text-3xl">
+                📤
+              </div>
+
+              <div>
+                <h2 className="text-xl font-extrabold text-purple-800">
+                  Bu İlanı Paylaş
+                </h2>
+
+                <p className="text-gray-600 mt-1">
+                  Bu yükü daha fazla kişiye ulaştır.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-5">
+              <button
+                type="button"
+                onClick={whatsAppPaylas}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-xl font-extrabold"
+              >
+                💬 WhatsApp
+              </button>
+
+              <button
+                type="button"
+                onClick={facebookPaylas}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-extrabold"
+              >
+                📘 Facebook
+              </button>
+
+              <button
+                type="button"
+                onClick={xPaylas}
+                className="bg-gray-900 hover:bg-black text-white px-4 py-3 rounded-xl font-extrabold"
+              >
+                𝕏 X
+              </button>
+
+              <button
+                type="button"
+                onClick={baglantiyiKopyala}
+                className="bg-white hover:bg-gray-50 border border-purple-300 text-purple-800 px-4 py-3 rounded-xl font-extrabold"
+              >
+                🔗 Linki Kopyala
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={cihazdanPaylas}
+              className="w-full mt-3 bg-purple-700 hover:bg-purple-800 text-white px-5 py-3 rounded-xl font-extrabold"
+            >
+              📲 Telefonda Paylaş / Instagram
+            </button>
+
+            {paylasimMesaji && (
+              <div className="mt-4 bg-white border border-purple-200 rounded-xl p-3 text-center font-bold text-purple-800">
+                {paylasimMesaji}
+              </div>
+            )}
+          </div>
+
           {/* KENDİ İLANIN */}
+
           {kendiIlanin && (
             <div className="mt-8 bg-blue-50 border border-blue-200 rounded-2xl p-6">
-
               <h2 className="font-extrabold text-blue-700 text-xl">
                 📦 Bu senin ilanının
               </h2>
@@ -340,15 +629,14 @@ export default function IlanDetayPage() {
                 Gelen teklifleri teklif yönetim
                 bölümünden inceleyebilirsin.
               </p>
-
             </div>
           )}
 
           {/* TEKLİF FORMU */}
+
           {!kendiIlanin &&
             ilan.durum !== "Anlaşıldı" && (
               <div className="mt-8 border-t pt-8">
-
                 <h2 className="text-3xl font-extrabold">
                   💰 Teklif Ver
                 </h2>
@@ -361,6 +649,7 @@ export default function IlanDetayPage() {
                 <div className="mt-6 space-y-5">
 
                   {/* FİYAT */}
+
                   <div>
                     <label className="block font-bold mb-2">
                       💰 Teklif Fiyatın
@@ -380,6 +669,7 @@ export default function IlanDetayPage() {
                   </div>
 
                   {/* MESAJ */}
+
                   <div>
                     <label className="block font-bold mb-2">
                       📝 Mesaj
@@ -399,6 +689,7 @@ export default function IlanDetayPage() {
                   </div>
 
                   {/* MESAJ */}
+
                   {mesaj && (
                     <div className="bg-gray-50 rounded-xl p-4 text-center font-bold whitespace-pre-line">
                       {mesaj}
@@ -406,7 +697,9 @@ export default function IlanDetayPage() {
                   )}
 
                   {/* GÖNDER */}
+
                   <button
+                    type="button"
                     onClick={teklifGonder}
                     disabled={gonderiliyor}
                     className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-4 rounded-xl font-extrabold text-lg"
@@ -415,21 +708,21 @@ export default function IlanDetayPage() {
                       ? "⏳ Teklif gönderiliyor..."
                       : "💰 Teklifi Gönder"}
                   </button>
-
                 </div>
               </div>
             )}
 
           {/* GİRİŞ UYARISI */}
+
           {!user &&
             ilan.durum !== "Anlaşıldı" && (
               <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-2xl p-6 text-center">
-
                 <p className="font-bold text-yellow-800">
                   🔐 Teklif vermek için giriş yapmalısın.
                 </p>
 
                 <button
+                  type="button"
                   onClick={() =>
                     router.push("/login")
                   }
@@ -437,10 +730,8 @@ export default function IlanDetayPage() {
                 >
                   Giriş Yap
                 </button>
-
               </div>
             )}
-
         </div>
       </div>
     </main>
